@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,54 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
   int _polylineIdCounter = 0;
-  PolylineId? selectedPolyline;
-
-  // Values when toggling polyline color
-  int colorsIndex = 0;
-  List<Color> colors = <Color>[
-    Colors.purple,
-    Colors.red,
-    Colors.green,
-    Colors.pink,
-  ];
-
-  // Values when toggling polyline width
-  int widthsIndex = 0;
-  List<int> widths = <int>[10, 20, 5];
-
-  int jointTypesIndex = 0;
-  List<JointType> jointTypes = <JointType>[JointType.mitered, JointType.bevel, JointType.round];
-
-  // Values when toggling polyline end cap type
-  int endCapsIndex = 0;
-  List<Cap> endCaps = <Cap>[Cap.buttCap, Cap.squareCap, Cap.roundCap];
-
-  // Values when toggling polyline start cap type
-  int startCapsIndex = 0;
-  List<Cap> startCaps = <Cap>[Cap.buttCap, Cap.squareCap, Cap.roundCap];
-
-  // Values when toggling polyline pattern
-  int patternsIndex = 0;
-  List<List<PatternItem>> patterns = <List<PatternItem>>[
-    <PatternItem>[],
-    <PatternItem>[PatternItem.dash(30.0), PatternItem.gap(20.0), PatternItem.dot, PatternItem.gap(20.0)],
-    <PatternItem>[PatternItem.dash(30.0), PatternItem.gap(20.0)],
-    <PatternItem>[PatternItem.dot, PatternItem.gap(10.0)],
-  ];
-
-  void _onPolylineTapped(PolylineId polylineId) {
-    setState(() {
-      selectedPolyline = polylineId;
-    });
-  }
 
   void _add() {
-    final int polylineCount = polylines.length;
-
-    if (polylineCount == 12) {
-      return;
-    }
-
     final String polylineIdVal = 'polyline_id_$_polylineIdCounter';
     _polylineIdCounter++;
     final PolylineId polylineId = PolylineId(polylineIdVal);
@@ -121,9 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
       color: Colors.orange,
       width: 5,
       points: _points,
-      onTap: () {
-        _onPolylineTapped(polylineId);
-      },
     );
 
     setState(() {
@@ -177,7 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       return Card(
                         child: ListTile(
                           onTap: () async {
-                            _data = await _loadCSV(_master[i][0].toString().padLeft(4, '0'));
+                            _data = await _loadCSV(
+                                _master[i][0].toString().padLeft(4, '0'));
                             _points.clear();
                             _markers.clear();
                             for (List<dynamic> e in _data) {
@@ -248,17 +199,20 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemCount: _data.length,
                           itemBuilder: (_, i) {
                             return GestureDetector(
-                              onTap: () async => await _goToTheLake(_data[i][1], _data[i][2]),
+                              onTap: () async =>
+                                  await _goToTheLake(_data[i][1], _data[i][2]),
                               child: Card(
                                 margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
                                   child: Table(
                                     children: [
                                       TableRow(
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 15.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0),
                                             child: Text(_data[i][0].toString()),
                                           ),
                                           Text(_data[i][1].toString()),
